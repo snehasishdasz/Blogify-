@@ -91,7 +91,7 @@
   }
 
   .card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(54, 54, 54, 0.992);
     backdrop-filter: blur(6px);
     border-radius: 1rem;
     overflow: hidden;
@@ -134,7 +134,7 @@
 
   .card-content a:hover {
     color: #ffffff;
-    text-decoration: underline;
+    text-decoration: none;
   }
 
   </style>
@@ -168,8 +168,9 @@
         <img src="<%= blog.coverImageURL %>" alt="Blog Cover Image" />
         <div class="card-content">
           <h3><%= blog.title %></h3>
-          <a href="/blog/<%= blog._id %>">Read More →</a>
+          <a href="/blog/<%= blog._id %>" class="inline-block px-4 py-1 text-sm bg-purple-600 text-white rounded-full hover:bg-purple-700 transition duration-300">Read</a>
         </div>
+        
       </div>
     <% }) %>
   </div>

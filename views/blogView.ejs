@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <%- include('./partials/head.ejs') %>
+  <title><%= blog.title %> | Blog</title>
+</head>
+<body class="bg-gray-950 text-white min-h-screen flex flex-col">
+  <%- include('./partials/nav.ejs') %>
+
+  <main class="flex-grow py-10 px-4">
+    <div class="max-w-4xl mx-auto bg-gray-900 rounded-3xl shadow-lg overflow-hidden">
+      
+      <!-- Cover Image -->
+      <div class="w-full flex justify-center mb-6">
+        <img 
+          src="<%= blog.coverImageURL %>" 
+          alt="Cover" 
+          class="max-w-2xl w-full max-h-[400px] object-contain rounded-xl shadow-xl" 
+        />
+      </div>
+
+      <div class="p-8 space-y-6">
+        <!-- Title -->
+        <h1 class="text-4xl font-bold text-purple-400"><%= blog.title %></h1>
+
+        <!-- Meta Info with Author Profile Image -->
+<% if (user) { %>
+    <div class="flex items-center space-x-3 text-sm text-gray-400">
+      <img 
+        src="<%= blog.createdBy.profileImageURL %>" 
+        alt="Author" 
+        class="w-8 h-8 rounded-full border border-gray-600" 
+      />
+      <span class="flex items-center gap-1">
+        🖊️ Posted by 
+        <span class="text-yellow-400 text-base font-bold underline underline-offset-4">
+          <%= blog.createdBy.fullName %>
+        </span>
+        on <%= new Date(blog.createdAt).toLocaleDateString() %>
+      </span>
+    </div>
+  <% } else { %>
+    <p class="text-sm text-gray-400">
+      🖊️ Posted on <%= new Date(blog.createdAt).toLocaleDateString() %>
+    </p>
+  <% } %>
+  
+
+        <!-- Blog Content -->
+        <div class="text-lg text-gray-300 leading-relaxed whitespace-pre-line">
+          <%= blog.body %>
+        </div>
+
+        <!-- Back Button -->
+        <div>
+          <a href="/" class="inline-block bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-full text-white font-medium transition duration-200">
+            ⬅️ Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

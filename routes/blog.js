@@ -31,11 +31,21 @@ router.post("/add-new",requireLogin, upload.single("coverImage"),async (req,res)
     const blog =await Blog.create({
         body,
         title,
-        createdBy: req.user._id,
+        createdBy: req.user.userId,
         coverImageURL: `/uploads/${req.file.filename}`
     })
+    console.log("User in POST /add-new:", req.user);
     // return res.redirect(`/blog/${blog._id}`)
     return res.redirect("/")
+})
+
+router.get("/:id",requireLogin, async (req,res)=>{
+    const {id} = req.params;
+    const blog = await Blog.findById(id).populate("createdBy"); //here we use populate because we want to get the user data who created the blog
+    return res.render("blogView",{
+        user:req.user,
+        blog,
+    })
 })
 
 module.exports = router;
