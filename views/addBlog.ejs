@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('./partials/head.ejs') %>
+    <title>Add New Blog</title>
+</head>
+<body class="bg-gray-950 text-white min-h-screen flex flex-col">
+    <%- include('./partials/nav.ejs') %>
+
+    <div class="flex-grow flex items-center justify-center px-4 mt-10">
+        <div class="w-full max-w-2xl bg-gray-900 p-8 rounded-2xl shadow-2xl">
+            <h2 class="text-3xl font-bold mb-6 text-center">📝 Add a New Blog</h2>
+            <form action="/blog/add-new" method="POST" enctype="multipart/form-data" class="space-y-5">
+                <div>
+                    <label class="block text-sm mb-1 font-semibold">Cover Image</label>
+                    <input type="file" name="coverImage" accept="image/*" required
+                        class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700" />
+                </div>
+
+                <div>
+                    <label class="block text-sm mb-1 font-semibold">Title</label>
+                    <input type="text" name="title" required
+                        class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        placeholder="Enter blog title" />
+                </div>
+
+                <div>
+                    <label class="block text-sm mb-1 font-semibold">Body</label>
+                    <textarea name="body" rows="8" required
+                        class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        placeholder="Write your blog here..."></textarea>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-purple-600 hover:bg-purple-700 transition duration-200 text-white py-2 rounded-lg font-semibold">
+                    ➕ Publish Blog
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" class="homepage">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('./partials/head.ejs') %>
+  <title>HomePage</title>
+
+  <style>
+    /* Homepage Background */
+    html.homepage {
+      --s: 120px;
+      --c1: #4f5f52;
+      --c2: #000000;
+      --_g: #0000 90deg, var(--c1) 0;
+      background:
+        conic-gradient(from 90deg at 2px 2px, var(--_g)),
+        conic-gradient(from 90deg at 1px 1px, var(--_g)),
+        var(--c2);
+      background-size: var(--s) var(--s), calc(var(--s)/5) calc(var(--s)/5);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5); /* Dim the background */
+      z-index: -1;
+    }
+
+    /* Project Description Background Pattern */
+    .project-desc {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      border-radius: 1rem;
+      background-color: rgba(0, 0, 0, 0.4); /* Fallback */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .project-desc::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      --s: 103px;
+      --c1: #494846;
+      --c2: #000000;
+
+      --_g: 
+        var(--c1) 0% 5%, var(--c2) 6% 15%, var(--c1) 16% 25%, var(--c2) 26% 35%, var(--c1) 36% 45%,
+        var(--c2) 46% 55%, var(--c1) 56% 65%, var(--c2) 66% 75%, var(--c1) 76% 85%, var(--c2) 86% 95%,
+        #0000 96%;
+
+      background:
+        radial-gradient(50% 50% at 100% 0, var(--_g)),
+        radial-gradient(50% 50% at 0 100%, var(--_g)),
+        radial-gradient(50% 50%, var(--_g)),
+        radial-gradient(50% 50%, var(--_g)) calc(var(--s)/2) calc(var(--s)/2),
+        var(--c1);
+      background-size: var(--s) var(--s);
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    /* Text styling for the Project Description Container */
+    .project-desc h2 {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+      color: white; /* Set title color to white */
+    }
+
+    .project-desc p {
+      font-family: 'Arial', sans-serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      letter-spacing: 0.5px;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    padding: 0 1.5rem 3rem;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(6px);
+    border-radius: 1rem;
+    overflow: hidden;
+    width: 300px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+  }
+
+  .card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .card-content {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .card-content h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #ffffff;
+  }
+
+  .card-content a {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #c2fbd7;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .card-content a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  </style>
+</head>
+<body class="text-white">
+
+  <%- include('./partials/nav.ejs') %>
+
+  <!-- Project Description Container -->
+  <div class="project-desc py-24 px-6 text-center shadow-lg mb-12 mx-4 sm:mx-12 mt-12">
+    <h2 class="text-white mb-4">
+      Welcome to Blogify
+    </h2>
+    <p class="text-white mb-6 short">
+      A place to read, share, and explore creative blogs. 
+    </p>
+    <p class="text-white text-md">
+      Stay inspired with fresh perspectives and new ideas.
+    </p>
+  </div>
+
+  <!-- All Blogs Heading -->
+  <div class="text-center mb-8">
+    <h2 class="text-3xl font-bold text-white">All Blogs</h2>
+  </div>
+
+<!-- Blog Cards Section -->
+<div class="card-container">
+    <% blogs.forEach(blog => { %>
+      <div class="card">
+        <img src="<%= blog.coverImageURL %>" alt="Blog Cover Image" />
+        <div class="card-content">
+          <h3><%= blog.title %></h3>
+          <a href="/blog/<%= blog._id %>">Read More →</a>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  
+  
+
+</body>
+</html>
