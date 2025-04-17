@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-const SECRET = "BaTM@n@756";
 
 const generateToken = (user)=>{
     return jwt.sign({
@@ -9,11 +8,11 @@ const generateToken = (user)=>{
         userId:user._id,
         profileImageURL:user.profileImageURL,
         role:user.role,
-    },SECRET)
+    },process.env.SECRET)
 };
 
 const verifyToken = (token)=>{
-    return jwt.verify(token,SECRET)
+    return jwt.verify(token,process.env.SECRET)
 };
 
 module.exports = {

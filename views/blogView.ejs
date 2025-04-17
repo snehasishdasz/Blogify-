@@ -1,66 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <%- include('./partials/head.ejs') %>
-  <title><%= blog.title %> | Blog</title>
-</head>
-<body class="bg-gray-950 text-white min-h-screen flex flex-col">
-  <%- include('./partials/nav.ejs') %>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('./partials/head.ejs') %>
+    <title><%= blog.title %> | Blog</title>
+  </head>
+  <body class="bg-gray-950 text-white min-h-screen flex flex-col">
+    <%- include('./partials/nav.ejs') %>
 
-  <main class="flex-grow py-10 px-4">
-    <div class="max-w-4xl mx-auto bg-gray-900 rounded-3xl shadow-lg overflow-hidden">
-      
-      <!-- Cover Image -->
-      <div class="w-full flex justify-center mb-6">
-        <img 
-          src="<%= blog.coverImageURL %>" 
-          alt="Cover" 
-          class="max-w-2xl w-full max-h-[400px] object-contain rounded-xl shadow-xl" 
-        />
-      </div>
-
-      <div class="p-8 space-y-6">
-        <!-- Title -->
-        <h1 class="text-4xl font-bold text-purple-400"><%= blog.title %></h1>
-
-        <!-- Meta Info with Author Profile Image -->
-<% if (user) { %>
-    <div class="flex items-center space-x-3 text-sm text-gray-400">
-      <img 
-        src="<%= blog.createdBy.profileImageURL %>" 
-        alt="Author" 
-        class="w-8 h-8 rounded-full border border-gray-600" 
-      />
-      <span class="flex items-center gap-1">
-        🖊️ Posted by 
-        <span class="text-yellow-400 text-base font-bold underline underline-offset-4">
-          <%= blog.createdBy.fullName %>
-        </span>
-        on <%= new Date(blog.createdAt).toLocaleDateString() %>
-      </span>
-    </div>
-  <% } else { %>
-    <p class="text-sm text-gray-400">
-      🖊️ Posted on <%= new Date(blog.createdAt).toLocaleDateString() %>
-    </p>
-  <% } %>
-  
-
-        <!-- Blog Content -->
-        <div class="text-lg text-gray-300 leading-relaxed whitespace-pre-line">
-          <%= blog.body %>
+    <main class="flex-grow py-10 px-4">
+      <div
+        class="max-w-4xl mx-auto bg-gray-900 rounded-3xl shadow-lg overflow-hidden"
+      >
+        <!-- Cover Image -->
+        <div class="w-full flex justify-center mb-6">
+          <img
+            src="<%= blog.coverImageURL %>"
+            alt="Cover"
+            class="max-w-2xl w-full max-h-[400px] object-contain rounded-xl shadow-xl"
+          />
         </div>
 
-        <!-- Back Button -->
-        <div>
-          <a href="/" class="inline-block bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-full text-white font-medium transition duration-200">
-            ⬅️ Back to Home
-          </a>
+        <div class="p-8 space-y-6">
+          <!-- Title -->
+          <h1 class="text-4xl font-bold text-purple-400"><%= blog.title %></h1>
+
+          <!-- Meta Info with Author Profile Image -->
+          <% if (user) { %>
+          <div class="flex items-center space-x-3 text-sm text-gray-400">
+            <img
+              src="<%= blog.createdBy.profileImageURL %>"
+              alt="Author"
+              class="w-8 h-8 rounded-full border border-gray-600"
+            />
+            <span class="flex items-center gap-1">
+              🖊️ Posted by
+              <span
+                class="text-yellow-400 text-base font-bold underline underline-offset-4"
+              >
+                <%= blog.createdBy.fullName %>
+              </span>
+              on <%= new Date(blog.createdAt).toLocaleDateString() %>
+            </span>
+          </div>
+          <% } else { %>
+          <p class="text-sm text-gray-400">
+            🖊️ Posted on <%= new Date(blog.createdAt).toLocaleDateString() %>
+          </p>
+          <% } %>
+
+          <!-- Blog Content -->
+          <div
+            class="text-lg text-gray-300 leading-relaxed whitespace-pre-line"
+          >
+            <%= blog.body %>
+          </div>
+
+          <!-- Delete Button -->
+          <% if (user && blog.createdBy._id.toString() === user.userId.toString()) { %>
+          <form action="/blog/delete/<%= blog._id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this blog?');">
+            <button class="bg-red-600 text-white px-4 py-2 rounded mt-4">Delete</button>
+          </form>
+          <% } %>
+
+          <!-- Comment Box -->
+          <div class="mt-10">
+            <h2 class="text-2xl font-semibold text-white mb-4">
+              💬 Leave a Comment
+            </h2>
+
+            <form
+              action="/blog/comment/<%= blog._id %>"
+              method="POST"
+              class="space-y-4"
+            >
+              <textarea
+                name="content"
+                rows="4"
+                placeholder="Write your comment here..."
+                required
+                class="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              ></textarea>
+
+              <button
+                type="submit"
+                class="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-full text-white font-medium transition duration-200"
+              >
+                💌 Post Comment
+              </button>
+            </form>
+          </div>
+
+          <!-- Display Comments -->
+          <h2 class="text-2xl font-semibold text-white mb-4">🗨️ Comments (<%= comments.length %>)</h2>
+
+          <% if (comments && comments.length > 0) { %>
+          <div class="space-y-4">
+            <% comments.forEach(comment => { %>
+            <div class="p-6 bg-gray-800 rounded-xl shadow-md space-y-3">
+              <div class="flex items-center space-x-3">
+                <img
+                  src="<%= comment.createdBy.profileImageURL %>"
+                  alt="User Profile"
+                  class="w-10 h-10 rounded-full border-2 border-gray-700"
+                />
+                <div>
+                  <p class="text-lg font-semibold text-yellow-300">
+                    <%= comment.createdBy.fullName %>
+                  </p>
+                  <p class="text-sm text-gray-400">
+                    <%= new Date(comment.createdAt).toLocaleDateString() %>
+                  </p>
+                </div>
+              </div>
+
+              <p class="text-gray-300 mt-3"><%= comment.content %></p>
+            </div>
+            <% }) %>
+          </div>
+          <% } else { %>
+          <p class="text-gray-400">
+            No comments yet. Be the first to leave a comment!
+          </p>
+          <% } %>
+
+          <!-- Back Button -->
+          <div>
+            <a
+              href="/"
+              class="inline-block bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-full text-white font-medium transition duration-200"
+            >
+              ⬅️ Back to Home
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
-</body>
+    </main>
+  </body>
 </html>
+s
