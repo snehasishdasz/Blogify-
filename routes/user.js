@@ -31,7 +31,7 @@ router.post("/signup", async (req, res) =>{
     });
     const token = generateToken(createdUser); // use your function
     res.cookie("token", token); // set token as cookie
-    console.log(createdUser);
+    // console.log(createdUser);
     return res.redirect("/")
 })
 

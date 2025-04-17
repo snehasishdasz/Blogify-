@@ -35,7 +35,7 @@ router.post("/add-new",requireLogin, upload.single("coverImage"),async (req,res)
         createdBy: req.user.userId,
         coverImageURL: `/uploads/${req.file.filename}`
     })
-    console.log("User in POST /add-new:", req.user);
+    // console.log("User in POST /add-new:", req.user);
     // return res.redirect(`/blog/${blog._id}`)
     return res.redirect("/")
 })
@@ -60,8 +60,8 @@ router.post("/comment/:blogId",requireLogin, async (req,res)=>{
         blogId,
         createdBy: req.user.userId,
     })
-    console.log("User in POST /comment:", req.user);
-    console.log("Comment created:", comment);
+    // console.log("User in POST /comment:", req.user);
+    // console.log("Comment created:", comment);
     
     return res.redirect(`/blog/${blogId}`)
 })
